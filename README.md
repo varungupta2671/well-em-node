@@ -1,5 +1,8 @@
 # well-em-node
 Well-EM back-end code
 
-- npm install
-- npm start
+For running the app
+
+`npm install`
+
+`npm start`

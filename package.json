@@ -1,7 +1,7 @@
 {
   "name": "well-em-node",
   "version": "1.0.0",
-  "description": "app for getting offers based on GPS",
+  "description": "hospital management system app",
   "main": "app.js",
   "private": true,
   "scripts": {
