@@ -1,0 +1,26 @@
+{
+  "name": "well-em-node",
+  "version": "1.0.0",
+  "description": "app for getting offers based on GPS",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "keywords": [
+    "Express",
+    "NodeJS",
+    "MongoDB"
+  ],
+  "author": "Varun Gupta",
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "mongoose": "^5.9.19",
+    "morgan": "~1.9.1"
+  }
+}
