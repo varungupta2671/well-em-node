@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
-const passport = require('passport');
 const indexRouter = require('./app/routes/index');
 const patientsRouter = require('./app/routes/patients');
 const loginRouter = require('./app/routes/login');
@@ -31,11 +30,6 @@ app.use(session({
     resave: true
 }));
 
-/*
-    Initialize Passport (authetification) to keep persisten login data (i.e in cookies)
-*/
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());

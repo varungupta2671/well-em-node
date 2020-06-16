@@ -13,6 +13,7 @@
     "MongoDB"
   ],
   "author": "Varun Gupta",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -24,9 +25,8 @@
     "express-validator": "^6.5.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.19",
-    "morgan": "~1.9.1",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "morgan": "~1.9.1"
   }
 }

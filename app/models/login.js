@@ -15,10 +15,11 @@ const patientAuthSchema = db.Schema({
     hid: { type: String, unique: true },
     aadharid: { type: String, unique: true },
     password: { type: String },
-    phone: { type: String, unique: true }
+    phone: { type: String, unique: true },
+    createdAt: { type: Date, default: Date.now() }
 });
 
-var loginAuth = module.exports = db.model('patientAuth', patientAuthSchema);
+module.exports = db.model('patientAuth', patientAuthSchema);
 
 /**
  * Common methods
@@ -46,19 +47,5 @@ function comparePassword(candidatePassword, hash, callback) {
     });
 }
 
-function getUserByHCareId (hid, callback) {
-    console.log("In getUserByHCareId !");
-	loginAuth.findOne({
-		hid: hid
-	}, callback);
-}
-
-function getUserById (id, callback) {
-    console.log("In getUserById !");
-	loginAuth.findById(id, callback);
-}
-
 module.exports.createPassword = encodePassword;
 module.exports.comparePassword = comparePassword;
-module.exports.getUserByHCareId = getUserByHCareId;
-module.exports.getUserById = getUserById;
