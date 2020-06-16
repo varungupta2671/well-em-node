@@ -19,8 +19,8 @@ const db=require('../dbconnection');
 **/
 
 const patientsSchema=db.Schema({
-    hid:{type:String,required:true},
-    aadharid:{type:String,required:true},
+    hid:{type:String,required:true,unique:true},
+    aadharid:String,
     name:{type:String,required:true},
     age:{type:Number,required:true},
     bg:{type:String,required:true},

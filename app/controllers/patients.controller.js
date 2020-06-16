@@ -57,7 +57,7 @@ exports.getPatientDetails = (req, res) => {
                     message: "Patient not found with id " + req.params.hid
                 });
             }
-            res.send(patient);
+            res.send(patient[0]);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
