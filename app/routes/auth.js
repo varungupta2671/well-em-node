@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 module.exports = function(req, res, next) {
   const token = req.header("token");
-  if (!token) return res.status(401).json({ message: "Auth Error" });
+  if (!token) return res.status(401).json({ message: "You are not authorised to do this action." });
 
   try {
     const decoded = jwt.verify(token, "randomString");
@@ -11,7 +11,7 @@ module.exports = function(req, res, next) {
     next();
   } catch (e) {
     console.error(e);
-    res.status(500).send({ message: "Invalid Token" });
+    res.status(500).send({ message: "You are not authorised to do this action." });
   }
 };
 

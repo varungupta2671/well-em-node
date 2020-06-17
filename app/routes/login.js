@@ -1,12 +1,17 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const { check, validationResult } = require("express-validator/check");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("./auth");
 const PatientAuth = require('../models/login');
+const Patient = require('../models/patients');
 
-/* POST patient signup. */
+/**
+ * @method - POST
+ * @description - Patient Signup
+ * @param - /auth/patient/signup
+ */
 router.post('/patient/signup',
   [
     check("hid", "Please Enter a Valid HealthCare Id")
@@ -75,12 +80,16 @@ router.post('/patient/signup',
       );
     } catch (err) {
       console.log(err.message);
-      res.status(500).send("Error in Saving");
+      res.status(500).send("Error in Saving | " + err.message);
     }
   }
 );
 
-/* POST patient signin. */
+/**
+ * @method - POST
+ * @description - Patient Signin
+ * @param - /auth/patient/signin
+ */
 router.post(
   "/patient/signin",
   [
@@ -144,18 +153,17 @@ router.post(
 /**
  * @method - GET
  * @description - Get LoggedIn User
- * @param - /user/me
+ * @param - /auth/check
  */
-
-
-router.get(
+router.post(
   "/check",
   auth,
   async (req, res) => {
     try {
       // request.user is getting fetched from Middleware after token authentication
       const user = await PatientAuth.findById(req.user.id);
-      res.json(user);
+      const userDetails = await Patient.findOne({hid: user.hid});
+      res.json(userDetails);
     } catch (e) {
       res.send({ message: "Error in Fetching user" });
     }

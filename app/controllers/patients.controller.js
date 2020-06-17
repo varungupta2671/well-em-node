@@ -1,4 +1,4 @@
-var Patients = require('../models/patients');
+const Patients = require('../models/patients');
 
 exports.savePatient = (req, res) => {
     // Validate request

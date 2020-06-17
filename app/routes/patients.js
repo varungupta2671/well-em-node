@@ -1,15 +1,16 @@
-var express=require('express');
-var router=express.Router();
+const express=require('express');
+const router=express.Router();
+const auth = require("./auth");
 const patientsCtrl = require('../controllers/patients.controller.js');
 
-router.post('/addPatient', patientsCtrl.savePatient);
+router.post('/addPatient', auth, patientsCtrl.savePatient);
 
-router.post('/getPatients', patientsCtrl.getPatientsList);
+router.post('/getPatients', auth, patientsCtrl.getPatientsList);
 
-router.post('/getPatients/:hid', patientsCtrl.getPatientDetails);
+router.post('/getPatients/:hid', auth, patientsCtrl.getPatientDetails);
 
-router.delete('/deletePatient/:hid', patientsCtrl.deletePatient);
+router.delete('/deletePatient/:hid', auth, patientsCtrl.deletePatient);
 
-router.put('/updatePatient/:hid', patientsCtrl.updatePatient);
+router.put('/updatePatient/:hid', auth, patientsCtrl.updatePatient);
 
 module.exports=router;
