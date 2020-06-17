@@ -3,8 +3,8 @@ var router = express.Router();
 const { check, validationResult } = require("express-validator/check");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const auth = require("./auth");
 const PatientAuth = require('../models/login');
-// const loginCtrl = require('../controllers/login.controller.js');
 
 /* POST patient signup. */
 router.post('/patient/signup',
@@ -13,7 +13,7 @@ router.post('/patient/signup',
       .not()
       .isEmpty(),
     check("email", "Please enter a valid email").isEmail(),
-    check("password", "Please enter a valid password").isLength({
+    check("password", "Please enter a valid password, password should be of minimum 6 characters.").isLength({
       min: 6
     })
   ],
@@ -140,5 +140,25 @@ router.post(
     }
   }
 );
+
+/**
+ * @method - GET
+ * @description - Get LoggedIn User
+ * @param - /user/me
+ */
+
+
+router.get(
+  "/check",
+  auth,
+  async (req, res) => {
+    try {
+      // request.user is getting fetched from Middleware after token authentication
+      const user = await PatientAuth.findById(req.user.id);
+      res.json(user);
+    } catch (e) {
+      res.send({ message: "Error in Fetching user" });
+    }
+  });
 
 module.exports = router;

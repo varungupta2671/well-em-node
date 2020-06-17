@@ -1,15 +1,17 @@
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 const createError = require('http-errors');
 const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const path = require('path');
 const cors = require('cors');
-const session = require('express-session');
+const app = express();
+
 const indexRouter = require('./app/routes/index');
 const patientsRouter = require('./app/routes/patients');
 const loginRouter = require('./app/routes/login');
-const app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
