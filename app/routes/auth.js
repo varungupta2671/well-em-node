@@ -11,7 +11,7 @@ module.exports = function(req, res, next) {
     next();
   } catch (e) {
     console.error(e);
-    res.status(500).send({ message: "You are not authorised to do this action." });
+    res.status(500).send({ message: "Your session has been expired." });
   }
 };
 

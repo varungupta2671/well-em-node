@@ -35,7 +35,16 @@ router.post('/patient/signup',
       email,
       aadharid,
       phone,
-      password
+      password,
+      name,
+      age,
+      bg,
+      weight,
+      height,
+      dob,
+      sex,
+      address,
+      city
     } = req.body;
     try {
       let user = await PatientAuth.findOne({
@@ -54,11 +63,28 @@ router.post('/patient/signup',
         phone,
         password
       });
+      
+      let userDetails = new Patient({
+        hid,
+        email,
+        aadharid,
+        phone,
+        name,
+        age,
+        bg,
+        weight,
+        height,
+        dob,
+        sex,
+        address,
+        city
+      });
 
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
+      await userDetails.save();
 
       const payload = {
         user: {
@@ -162,7 +188,7 @@ router.post(
     try {
       // request.user is getting fetched from Middleware after token authentication
       const user = await PatientAuth.findById(req.user.id);
-      const userDetails = await Patient.findOne({hid: user.hid});
+      const userDetails = await Patient.findOne({ hid: user.hid });
       res.json(userDetails);
     } catch (e) {
       res.send({ message: "Error in Fetching user" });
