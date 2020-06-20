@@ -15,7 +15,8 @@ const db=require('../dbconnection');
  * "phone" : "9988845535",
  * "email" : "est@gmail.com",
  * "address" : "332 Neeladhri, E-City",
- * "city" : "Bangalore"
+ * "city" : "Bangalore",
+ * "country": "India"
 **/
 
 const patientsSchema=db.Schema({
@@ -31,7 +32,8 @@ const patientsSchema=db.Schema({
     phone:{type:String,required:true},
     email:{type:String,required:true},
     address:{type:String,required:true},
-    city:{type:String,required:true}
+    city:{type:String,required:true},
+    country:{type:String,required:true}
 });
 
 module.exports=db.model('patients',patientsSchema);

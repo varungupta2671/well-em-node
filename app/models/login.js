@@ -11,12 +11,13 @@ const bcrypt = require('bcryptjs');
  * "phone" : "9988845535"
 **/
 
-const patientAuthSchema = db.Schema({
+const authSchema = db.Schema({
     hid: { type: String, unique: true },
     aadharid: { type: String, unique: true },
     password: { type: String },
     phone: { type: String, unique: true },
+    type: {type: String},
     createdAt: { type: Date, default: Date.now() }
 });
 
-module.exports = db.model('patientAuth', patientAuthSchema);
+module.exports = db.model('superAuth', authSchema);

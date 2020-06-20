@@ -4,8 +4,8 @@ const { check, validationResult } = require("express-validator/check");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("./auth");
-const PatientAuth = require('../models/login');
-const Patient = require('../models/patients');
+const AuthModel = require('../models/login');
+const PatientModel = require('../models/patients');
 
 /**
  * @method - POST
@@ -44,10 +44,12 @@ router.post('/patient/signup',
       dob,
       sex,
       address,
-      city
+      city,
+      country,
+      type
     } = req.body;
     try {
-      let user = await PatientAuth.findOne({
+      let user = await AuthModel.findOne({
         hid
       });
       if (user) {
@@ -56,15 +58,16 @@ router.post('/patient/signup',
         });
       }
 
-      user = new PatientAuth({
+      user = new AuthModel({
         hid,
         email,
         aadharid,
         phone,
-        password
+        password,
+        type
       });
-      
-      let userDetails = new Patient({
+
+      let userDetails = new PatientModel({
         hid,
         email,
         aadharid,
@@ -77,7 +80,8 @@ router.post('/patient/signup',
         dob,
         sex,
         address,
-        city
+        city,
+        country
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -134,7 +138,7 @@ router.post(
 
     const { hid, password } = req.body;
     try {
-      let user = await PatientAuth.findOne({
+      let user = await AuthModel.findOne({
         hid
       });
       if (!user)
@@ -185,11 +189,35 @@ router.post(
   "/check",
   auth,
   async (req, res) => {
+
+    const { type } = req.body;
     try {
       // request.user is getting fetched from Middleware after token authentication
-      const user = await PatientAuth.findById(req.user.id);
-      const userDetails = await Patient.findOne({ hid: user.hid });
-      res.json(userDetails);
+      console.log("_REQ_BODY_", req.body);
+      switch (type) {
+        case "p":
+          console.log("I am patient !");
+          const user = await AuthModel.findById(req.user.id);
+          const userDetails = await PatientModel.findOne({ hid: user.hid });
+          res.json(userDetails);
+          break;
+        case "d":
+          console.log("I am doctor !");
+          res.json({});
+          break;
+        case "h":
+          console.log("I am hospital !");
+          res.json({});
+          break;
+        case "l":
+          console.log("I am lab !");
+          res.json({});
+          break;
+        default:
+          console.log("Invalid user type !!");
+          res.json({});
+      }
+
     } catch (e) {
       res.send({ message: "Error in Fetching user" });
     }
