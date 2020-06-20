@@ -1,7 +1,12 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-module.exports = function(req, res, next) {
+/**
+ * Common methods
+ * --------------
+ */
+
+function generateToken(req, res, next) {
   const token = req.header("token");
   if (!token) return res.status(401).json({ message: "You are not authorised to do this action." });
 
@@ -13,12 +18,8 @@ module.exports = function(req, res, next) {
     console.error(e);
     res.status(500).send({ message: "Your session has been expired." });
   }
-};
+}
 
-/**
- * Common methods
- * --------------
- */
 // hash the password when creating a new user in the database
 function encodePassword(newUser, callback) {
     bcrypt.genSalt(10, function (err, salt) {
@@ -40,5 +41,6 @@ function comparePassword(candidatePassword, hash, callback) {
     });
 }
 
+module.exports.token = generateToken;
 module.exports.encodePassword = encodePassword;
 module.exports.comparePassword = comparePassword;

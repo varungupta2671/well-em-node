@@ -1,16 +1,16 @@
 const express=require('express');
 const router=express.Router();
-const auth = require("./auth");
+const { token } = require("../controllers/common.controller.js");
 const patientsCtrl = require('../controllers/patients.controller.js');
 
-router.post('/addPatient', auth, patientsCtrl.savePatient);
+router.post('/addPatient', token, patientsCtrl.savePatient);
 
-router.post('/getPatients', auth, patientsCtrl.getPatientsList);
+router.post('/getPatients', token, patientsCtrl.getPatientsList);
 
-router.post('/getPatients/:hid', auth, patientsCtrl.getPatientDetails);
+router.post('/getPatients/:hid', token, patientsCtrl.getPatientDetails);
 
-router.delete('/deletePatient/:hid', auth, patientsCtrl.deletePatient);
+router.delete('/deletePatient/:hid', token, patientsCtrl.deletePatient);
 
-router.put('/updatePatient/:hid', auth, patientsCtrl.updatePatient);
+router.put('/updatePatient/:hid', token, patientsCtrl.updatePatient);
 
 module.exports=router;
