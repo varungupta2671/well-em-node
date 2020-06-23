@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator/check");
+const { getUniqueId } = require("../controllers/common.controller.js");
 
 const { AuthModel } = require('../models/auth');
 const { PatientModel } = require('../models/patient');
@@ -14,7 +15,6 @@ exports.signupPatient = async (req, res) => {
     }
 
     const {
-        hid,
         email,
         aadharid,
         phone,
@@ -28,70 +28,92 @@ exports.signupPatient = async (req, res) => {
         sex,
         address,
         city,
-        country,
-        type
+        country
     } = req.body;
-    
-    try {
-        let user = await AuthModel.findOne({
-            hid
+    const utype = req.params.usertype;
+    const hid = getUniqueId(utype);
+
+    let user = await AuthModel.findOne({
+        id: hid
+    });
+
+    if (user) {
+        return res.status(400).json({
+            msg: "User Already Exists"
         });
-        if (user) {
-            return res.status(400).json({
-                msg: "User Already Exists"
-            });
-        }
+    }
+
+    try {
 
         user = new AuthModel({
-            hid,
-            email,
-            aadharid,
-            phone,
-            password,
-            type
+            _id: hid,
+            email: email,
+            aadharid: aadharid,
+            phone: phone,
+            password: password,
+            utype: utype
         });
 
-        let userDetails = new PatientModel({
-            hid,
-            email,
-            aadharid,
-            phone,
-            name,
-            age,
-            bg,
-            weight,
-            height,
-            dob,
-            sex,
-            address,
-            city,
-            country
-        });
+        switch (utype) {
+            case "p":
+                // Register code here for Patient
 
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
-
-        await user.save();
-        await userDetails.save();
-
-        const payload = {
-            user: {
-                id: user.id
-            }
-        };
-
-        jwt.sign(
-            payload,
-            "randomString", {
-            expiresIn: 10000
-        },
-            (err, token) => {
-                if (err) throw err;
-                res.status(200).json({
-                    token
+                let userDetails = new PatientModel({
+                    hid,
+                    email,
+                    aadharid,
+                    phone,
+                    name,
+                    age,
+                    bg,
+                    weight,
+                    height,
+                    dob,
+                    sex,
+                    address,
+                    city,
+                    country
                 });
-            }
-        );
+
+                const salt = await bcrypt.genSalt(10);
+                user.password = await bcrypt.hash(password, salt);
+                // console.log("USER_ => ", user);
+
+                await user.save();
+                await userDetails.save();
+
+                const payload = {
+                    user: {
+                        id: user.id
+                    }
+                };
+
+                jwt.sign(
+                    payload,
+                    "randomString", {
+                    expiresIn: 10000
+                },
+                    (err, token) => {
+                        if (err) throw err;
+                        res.status(200).json({
+                            'token': token, 'uid': hid
+                        });
+                    }
+                );
+
+                break;
+            case "d":
+                // Register code here for Staff
+                break;
+            case "h":
+                // Register code here for Hospital
+                break;
+            case "l":
+                // Register code here for Lab
+                break;
+            default:
+                console.log("Invalid user type !!");
+        }
     } catch (err) {
         console.log(err.message);
         res.status(500).send("Error in Saving | " + err.message);

@@ -6,26 +6,31 @@ const db = require('../dbconnection');
  * "sid" : "3426533",
  * "sname" : "Sam",
  * "stype": "d",
- * 
- * "age" : 27,
- * "bg" : "AB+",
- * "weight" : 67,
- * "height" : 180,
- * "hid" : "2345454",
- * "aadharid" : "34234dff",
+ * "email" : "est@gmail.com",
  * "dob" : "01/02/1993",
  * "sex" : "m",
  * "phone" : "9988845535",
- * "email" : "est@gmail.com",
- * "address" : "332 Neeladhri, E-City",
- * "city" : "Bangalore",
- * "country": "India",
+ * "aadharid" : "34234dff",
+ * "qualification": "MD",
+ * "regNo" : "Lt48304385",
+ * "regState" : "Punjab",
+ * "yearOfReg": 2012,
 **/
 
 const staffSchema = db.Schema({
     sid: { type: String, required: true, unique: true },
     sname: String,
+    speciality: Number,
     stype: { type: String, required: true },
+    email: String,
+    dob: { type: Date, required: true },
+    sex: { type: String, required: true },
+    phone: { type: String, required: true },
+    aadharid: { type: String, sparse: true },
+    qualification: { type: String, required: true },
+    regNo: { type: String, sparse: true },
+    regState: String,
+    yearOfReg: Number
 });
 
 module.exports.StaffModel = db.model('staff_info_tbl', staffSchema);

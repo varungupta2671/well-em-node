@@ -11,11 +11,11 @@ const db = require('../dbconnection');
 **/
 
 const authSchema = db.Schema({
-    hid: { type: String, unique: true },
-    aadharid: { type: String, unique: true },
-    password: { type: String },
-    phone: { type: String, unique: true },
-    type: { type: String },
+    _id: { type: String, unique: true },
+    aadharid: { type: String, sparse: true },
+    password: String,
+    phone: { type: String, sparse: true },
+    utype: String,
     createdAt: { type: Date, default: Date.now() }
 });
 

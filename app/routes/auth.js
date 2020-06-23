@@ -9,11 +9,8 @@ const authCtrl = require('../controllers/auth.controller.js');
  * @description - Patient Signup
  * @param - /auth/patient/signup
  */
-router.post('/patient/signup',
+router.post('/signup/:usertype',
   [
-    check('hid', 'Please Enter a Valid HealthCare Id')
-      .not()
-      .isEmpty(),
     check('email', 'Please enter a valid email').isEmail(),
     check('password', 'Please enter a valid password, password should be of minimum 6 characters.').isLength({
       min: 6

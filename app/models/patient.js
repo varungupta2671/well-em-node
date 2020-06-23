@@ -21,7 +21,7 @@ const db = require('../dbconnection');
 
 const patientsSchema = db.Schema({
     hid: { type: String, required: true, unique: true },
-    aadharid: String,
+    aadharid: { type: String, sparse: true },
     name: { type: String, required: true },
     age: { type: Number, required: true },
     bg: { type: String, required: true },
@@ -29,8 +29,8 @@ const patientsSchema = db.Schema({
     height: { type: Number, required: true },
     dob: { type: Date, required: true },
     sex: { type: String, required: true },
-    phone: { type: String, required: true },
-    email: { type: String, required: true },
+    phone: { type: String, required: true, sparse: true},
+    email: { type: String, required: true, sparse: true },
     address: { type: String, required: true },
     city: { type: String, required: true },
     country: { type: String, required: true }

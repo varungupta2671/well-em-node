@@ -10,7 +10,7 @@ const app = express();
 
 const indexRouter = require('./app/routes/index');
 const patientsRouter = require('./app/routes/patients');
-const loginRouter = require('./app/routes/login');
+const authRouter = require('./app/routes/auth');
 
 
 // view engine setup
@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/patients', patientsRouter);
-app.use('/auth', loginRouter);
+app.use('/auth', authRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
