@@ -14,23 +14,22 @@ exports.signupPatient = async (req, res) => {
         });
     }
 
-    const {
-        email,
-        aadharid,
-        phone,
-        password,
-        name,
-        age,
-        bg,
-        weight,
-        height,
-        dob,
-        sex,
-        address,
-        city,
-        country
-    } = req.body;
-    const utype = req.params.usertype;
+    const
+        email = req.body.email || '',
+        aadharid = req.body.aadharid || '',
+        phone = req.body.phone || '',
+        password = req.body.password,
+        name = req.body.name || '',
+        age = req.body.age  || '',
+        bg = req.body.bg || '',
+        weight = req.body.weight || '',
+        height = req.body.height || '',
+        dob = req.body.dob || '',
+        sex = req.body.sex || '',
+        address = req.body.address || '',
+        city = req.body.city || '',
+        country = req.body.country || '',
+        utype = req.params.usertype || '';
     const hid = getUniqueId(utype);
 
     let user = await AuthModel.findOne({
