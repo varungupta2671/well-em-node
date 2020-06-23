@@ -1,9 +1,8 @@
 const db = require('../dbconnection');
-const bcrypt = require('bcryptjs');
 
 /**
- * User
- * --------
+ * User Auth
+ * ---------
  * "hid" : "2345454",
  * "aadharid" : "34234dff",
  * "email" : "sam@gmail.com",
@@ -16,8 +15,8 @@ const authSchema = db.Schema({
     aadharid: { type: String, unique: true },
     password: { type: String },
     phone: { type: String, unique: true },
-    type: {type: String},
+    type: { type: String },
     createdAt: { type: Date, default: Date.now() }
 });
 
-module.exports = db.model('superAuth', authSchema);
+module.exports.AuthModel = db.model('superauth_tbl', authSchema);

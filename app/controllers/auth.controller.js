@@ -2,8 +2,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator/check");
 
-const AuthModel = require('../models/login');
-const PatientModel = require('../models/patients');
+const { AuthModel } = require('../models/auth');
+const { PatientModel } = require('../models/patient');
 
 exports.signupPatient = async (req, res) => {
     const errors = validationResult(req);
@@ -162,10 +162,10 @@ exports.checkAuth = async (req, res) => {
     const { type } = req.body;
     try {
         // request.user is getting fetched from Middleware after token authentication
+        const user = await AuthModel.findById(req.user.id);
         switch (type) {
             case "p":
                 console.log("I am patient !");
-                const user = await AuthModel.findById(req.user.id);
                 const userDetails = await PatientModel.findOne({ hid: user.hid });
                 res.json(userDetails);
                 break;

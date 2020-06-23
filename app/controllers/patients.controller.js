@@ -1,4 +1,4 @@
-const Patients = require('../models/patients');
+const { PatientModel } = require('../models/patient');
 
 exports.savePatient = (req, res) => {
     // Validate request
@@ -9,7 +9,7 @@ exports.savePatient = (req, res) => {
     }
 
     // Save a Patient
-    const category = new Patients({
+    const category = new PatientModel({
         hid: req.body.hid,
         aadharid: req.body.aadharid,
         name: req.body.name,
@@ -38,7 +38,7 @@ exports.savePatient = (req, res) => {
 
 exports.getPatientsList = (req, res) => {
     // console.log('request', req);
-    Patients.find()
+    PatientModel.find()
         .then(data => {
             res.send(data);
         }).catch(err => {
@@ -50,7 +50,7 @@ exports.getPatientsList = (req, res) => {
 
 exports.getPatientDetails = (req, res) => {
     // console.log('request', req);
-    Patients.find({hid: req.params.hid})
+    PatientModel.find({hid: req.params.hid})
         .then(patient => {
             if (!patient) {
                 return res.status(404).send({
@@ -71,7 +71,7 @@ exports.getPatientDetails = (req, res) => {
 };
 
 exports.deletePatient = (req, res) => {
-    Patients.findOneAndRemove({hid: req.params.hid})
+    PatientModel.findOneAndRemove({hid: req.params.hid})
         .then(patient => {
             if (!patient) {
                 return res.status(404).send({
@@ -98,7 +98,7 @@ exports.updatePatient = (req, res) => {
         });
     }
     // Find patient and update it with the request body
-    Patients.findOneAndUpdate({hid: req.params.hid}, {
+    PatientModel.findOneAndUpdate({hid: req.params.hid}, {
         aadharid: req.body.aadharid,
         name: req.body.name,
         age: req.body.age,
