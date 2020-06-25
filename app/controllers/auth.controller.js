@@ -131,7 +131,7 @@ exports.signinPatient = async (req, res) => {
     const { hid, password } = req.body;
     try {
         let user = await AuthModel.findOne({
-            hid
+            _id: hid
         });
         if (!user)
             return res.status(400).json({
@@ -187,7 +187,8 @@ exports.checkAuth = async (req, res) => {
         switch (type) {
             case "p":
                 console.log("I am patient !");
-                const userDetails = await PatientModel.findOne({ hid: user.hid });
+                const userDetails = await PatientModel.findOne({ hid: user.id });
+                console.log("user_", userDetails);
                 res.json(userDetails);
                 break;
             case "d":

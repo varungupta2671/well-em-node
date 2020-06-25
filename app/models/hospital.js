@@ -28,4 +28,20 @@ const hospitalSchema = db.Schema({
     userType: { type: String, required: true }
 });
 
+const departmentSchema = db.Schema({
+    departmentname: String,
+    departmentid: { type: String, unique: true },
+    departmentdescription: String
+});
+
+const treatmentSummarySchema = db.Schema({
+    uid: String,
+    treatmentname: String,
+    treatmentid: { type: String, unique: true },
+    treatmentdescription: String,
+    createdAt: { type: Date, default: Date.now() }
+});
+
 module.exports.HospitalModel = db.model('hospital_info_tbl', hospitalSchema);
+module.exports.HospitalModel = db.model('departments_tbl', departmentSchema);
+module.exports.HospitalModel = db.model('hospitalized_summary_tbl', treatmentSummarySchema);

@@ -21,7 +21,14 @@ const labSchema = db.Schema({
     contactName: String,
     laddress: String,
     lstate: String,
-    lcity: String
+    lcity: String,
+    ltests: { type: Array, default: [] },
+});
+
+const labTestSchema = db.Schema({
+    testname: String,
+    testid: { type: String, unique: true }
 });
 
 module.exports.LabModel = db.model('lab_info_tbl', labSchema);
+module.exports.LabModel = db.model('lab_tests_tbl', labTestSchema);

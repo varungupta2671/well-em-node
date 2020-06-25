@@ -36,4 +36,14 @@ const patientsSchema = db.Schema({
     country: { type: String, required: true }
 });
 
+const appointmentSummarySchema = db.Schema({
+    uid: String,
+    appointmentname: String,
+    appointmentid: { type: String, unique: true },
+    doctorid: { type: String, required: true },
+    appointmenttime: { type: Date },
+    createdAt: { type: Date, default: Date.now() }
+});
+
 module.exports.PatientModel = db.model('patient_info_tbl', patientsSchema);
+module.exports.HospitalModel = db.model('hospitalized_summary_tbl', appointmentSummarySchema);
