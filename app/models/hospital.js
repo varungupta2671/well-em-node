@@ -43,5 +43,5 @@ const treatmentSummarySchema = db.Schema({
 });
 
 module.exports.HospitalModel = db.model('hospital_info_tbl', hospitalSchema);
-module.exports.HospitalModel = db.model('departments_tbl', departmentSchema);
-module.exports.HospitalModel = db.model('hospitalized_summary_tbl', treatmentSummarySchema);
+module.exports.DepartmentModel = db.model('departments_tbl', departmentSchema);
+module.exports.TreatmentModel = db.model('hospitalized_summary_tbl', treatmentSummarySchema);

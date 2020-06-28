@@ -31,4 +31,4 @@ const labTestSchema = db.Schema({
 });
 
 module.exports.LabModel = db.model('lab_info_tbl', labSchema);
-module.exports.LabModel = db.model('lab_tests_tbl', labTestSchema);
+module.exports.LabTestModel = db.model('lab_tests_tbl', labTestSchema);

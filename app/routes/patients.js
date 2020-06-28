@@ -1,5 +1,5 @@
-const express=require('express');
-const router=express.Router();
+const express = require('express');
+const router = express.Router();
 const { token } = require("../controllers/common.controller.js");
 const patientsCtrl = require('../controllers/patients.controller.js');
 
@@ -13,4 +13,4 @@ router.delete('/deletePatient/:hid', token, patientsCtrl.deletePatient);
 
 router.put('/updatePatient/:hid', token, patientsCtrl.updatePatient);
 
-module.exports=router;
+module.exports = router;

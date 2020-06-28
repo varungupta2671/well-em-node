@@ -22,7 +22,7 @@ router.post('/signup/:usertype',
  * @description - Patient Signin
  * @param - /auth/patient/signin
  */
-router.post('/patient/signin',
+router.post('/patient/signin/:usertype',
   [
     check('password', 'Please enter a valid password').isLength({
       min: 6
@@ -34,11 +34,6 @@ router.post('/patient/signin',
  * @description - Get LoggedIn User
  * @param - /auth/check
  */
-router.post('/check',
-  [
-    check('type', 'Please send a valid user type')
-    .not()
-    .isEmpty(),
-  ], token, authCtrl.checkAuth);
+router.post('/check/:usertype', token, authCtrl.checkAuth);
 
 module.exports = router;
