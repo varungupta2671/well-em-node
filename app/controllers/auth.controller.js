@@ -198,10 +198,11 @@ exports.signinPatient = async (req, res) => {
         });
     }
 
-    const { hid, password } = req.body;
+    const { uid, password } = req.body;
+    const utype = req.params.usertype;
     try {
         let user = await AuthModel.findOne({
-            _id: hid
+            _id: uid, utype: utype
         });
         if (!user)
             return res.status(400).json({
@@ -263,19 +264,29 @@ exports.checkAuth = async (req, res) => {
                 break;
             case "d":
                 console.log("I am doctor !");
-                res.json({});
+                const userDetails = await StaffModel.findOne({ sid: user.id });
+                console.log("user_", userDetails);
                 break;
             case "h":
                 console.log("I am hospital !");
-                res.json({});
+                const userDetails = await HospitalModel.findOne({ hoid: user.id });
+                console.log("user_", userDetails);
                 break;
             case "l":
                 console.log("I am lab !");
-                res.json({});
+                const userDetails = await LabModel.findOne({ lid: user.id });
+                console.log("user_", userDetails);
+                break;
+            case "ph":
+                console.log("I am pharmacy !");
+                const userDetails = await PharmacyModel.findOne({ pid: user.id });
+                console.log("user_", userDetails);
                 break;
             default:
                 console.log("Invalid user type !!");
-                res.json({});
+                return res.status(400).json({
+                    msg: "Invalid user !"
+                });
         }
 
     } catch (e) {
