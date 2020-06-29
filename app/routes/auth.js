@@ -15,19 +15,19 @@ router.post('/signup/:usertype',
     check('password', 'Please enter a valid password, password should be of minimum 6 characters.').isLength({
       min: 6
     })
-  ], authCtrl.signupPatient);
+  ], authCtrl.signUp);
 
 /**
  * @method - POST
  * @description - Patient Signin
  * @param - /auth/patient/signin
  */
-router.post('/patient/signin/:usertype',
+router.post('/signin/:usertype',
   [
     check('password', 'Please enter a valid password').isLength({
       min: 6
     })
-  ], authCtrl.signinPatient);
+  ], authCtrl.signIn);
 
 /**
  * @method - GET

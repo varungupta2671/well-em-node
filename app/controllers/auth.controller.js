@@ -10,7 +10,7 @@ const { HospitalModel } = require('../models/hospital');
 const { LabModel } = require('../models/lab');
 const { PharmacyModel } = require('../models/pharmacy');
 
-exports.signupPatient = async (req, res) => {
+exports.signUp = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({
@@ -189,7 +189,7 @@ exports.signupPatient = async (req, res) => {
     }
 };
 
-exports.signinPatient = async (req, res) => {
+exports.signIn = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -251,6 +251,7 @@ exports.checkAuth = async (req, res) => {
         });
     }
 
+    let userDetails;
     const type = req.params.usertype;
     try {
         // request.user is getting fetched from Middleware after token authentication
@@ -258,28 +259,28 @@ exports.checkAuth = async (req, res) => {
         switch (type) {
             case "p":
                 console.log("I am patient !");
-                const userDetails = await PatientModel.findOne({ hid: user.id });
+                userDetails = await PatientModel.findOne({ hid: user.id });
                 console.log("user_", userDetails);
                 res.json(userDetails);
                 break;
             case "d":
                 console.log("I am doctor !");
-                const userDetails = await StaffModel.findOne({ sid: user.id });
+                userDetails = await StaffModel.findOne({ sid: user.id });
                 console.log("user_", userDetails);
                 break;
             case "h":
                 console.log("I am hospital !");
-                const userDetails = await HospitalModel.findOne({ hoid: user.id });
+                userDetails = await HospitalModel.findOne({ hoid: user.id });
                 console.log("user_", userDetails);
                 break;
             case "l":
                 console.log("I am lab !");
-                const userDetails = await LabModel.findOne({ lid: user.id });
+                userDetails = await LabModel.findOne({ lid: user.id });
                 console.log("user_", userDetails);
                 break;
             case "ph":
                 console.log("I am pharmacy !");
-                const userDetails = await PharmacyModel.findOne({ pid: user.id });
+                userDetails = await PharmacyModel.findOne({ pid: user.id });
                 console.log("user_", userDetails);
                 break;
             default:
