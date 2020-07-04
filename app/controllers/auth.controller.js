@@ -231,8 +231,11 @@ exports.signIn = async (req, res) => {
             },
             (err, token) => {
                 if (err) throw err;
+                res.set({
+                    'auth-token': token
+                });
                 res.status(200).json({
-                    token
+                    message: "You are successfully logged into the application!"
                 });
             }
         );
