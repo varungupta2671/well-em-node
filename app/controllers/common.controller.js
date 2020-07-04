@@ -55,11 +55,11 @@ function generateUniqueId(userType) {
 }
 
 // hash the password when creating a new user in the database
-function encodePassword(password) {
+function encodePassword(password, callback) {
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(password, salt, function (err, hash) {
       // store hash
-      return hash;
+      callback(hash);
     });
   });
 }

@@ -59,130 +59,131 @@ exports.signUp = async (req, res) => {
 
     try {
 
-        user = new AuthModel({
-            _id: uid,
-            email: email,
-            aadharid: aadharid,
-            phone: phone,
-            password: password,
-            utype: utype
+        encodePassword(password, async (hashPass) => {
+            user = new AuthModel({
+                _id: uid,
+                email: email,
+                password: hashPass,
+                aadharid: aadharid,
+                phone: phone,
+                utype: utype
+            });
+
+            const payload = {
+                user: {
+                    id: user.id
+                }
+            };
+
+            switch (utype) {
+                case "p":
+                    // Register code here for Patient
+                    userDetails = new PatientModel({
+                        hid: uid,
+                        email: email,
+                        aadharid: aadharid,
+                        phone: phone,
+                        name: name,
+                        age: age,
+                        bg: bg,
+                        weight: weight,
+                        height: height,
+                        dob: dob,
+                        sex: sex,
+                        address: address,
+                        city: city,
+                        country: country
+                    });
+
+                    break;
+                case "d":
+                    // Register code here for Staff
+                    userDetails = new StaffModel({
+                        sid: uid,
+                        sname: name,
+                        speciality: speciality,
+                        stype: stype,
+                        email: email,
+                        dob: dob,
+                        sex: sex,
+                        phone: phone,
+                        aadharid: aadharid,
+                        qualification: qualification,
+                        regNo: regNo,
+                        regState: regState,
+                        yearOfReg: yearOfReg
+                    });
+
+                    break;
+                case "h":
+                    // Register code here for Hospital
+                    userDetails = new HospitalModel({
+                        hoid: uid,
+                        hname: name,
+                        departments: departments,
+                        email: email,
+                        contactNumber: phone,
+                        contactName: contactName,
+                        haddress: address,
+                        hstate: state,
+                        hcity: city,
+                        userType: stype
+                    });
+
+                    break;
+                case "l":
+                    // Register code here for Lab
+                    userDetails = new LabModel({
+                        lid: uid,
+                        lname: name,
+                        email: email,
+                        contactNumber: phone,
+                        contactName: contactName,
+                        laddress: address,
+                        lstate: state,
+                        lcity: city,
+                        ltests: ltests
+                    });
+
+                    break;
+                case "ph":
+                    // Register code here for Pharmacy
+                    userDetails = new PharmacyModel({
+                        pid: uid,
+                        pname: name,
+                        email: email,
+                        contactNumber: phone,
+                        contactName: contactName,
+                        paddress: address,
+                        pstate: state,
+                        pcity: city
+                    });
+
+                    break;
+                default:
+                    console.log("Invalid user type !!");
+                    return res.status(400).json({
+                        msg: "You have registered as invalid user !"
+                    });
+            }
+
+            await user.save();
+            await userDetails.save();
+
+            jwt.sign(
+                payload,
+                "randomString", {
+                expiresIn: 10000
+            },
+                (err, token) => {
+                    if (err) throw err;
+                    res.status(200).json({
+                        'token': token, 'uid': uid
+                    });
+                }
+            );
         });
 
-        const payload = {
-            user: {
-                id: user.id
-            }
-        };
-
-        switch (utype) {
-            case "p":
-                // Register code here for Patient
-                userDetails = new PatientModel({
-                    hid: uid,
-                    email: email,
-                    aadharid: aadharid,
-                    phone: phone,
-                    name: name,
-                    age: age,
-                    bg: bg,
-                    weight: weight,
-                    height: height,
-                    dob: dob,
-                    sex: sex,
-                    address: address,
-                    city: city,
-                    country: country
-                });
-
-                break;
-            case "d":
-                // Register code here for Staff
-                userDetails = new StaffModel({
-                    sid: uid,
-                    sname: name,
-                    speciality: speciality,
-                    stype: stype,
-                    email: email,
-                    dob: dob,
-                    sex: sex,
-                    phone: phone,
-                    aadharid: aadharid,
-                    qualification: qualification,
-                    regNo: regNo,
-                    regState: regState,
-                    yearOfReg: yearOfReg
-                });
-
-                break;
-            case "h":
-                // Register code here for Hospital
-                userDetails = new HospitalModel({
-                    hoid: uid,
-                    hname: name,
-                    departments: departments,
-                    email: email,
-                    contactNumber: phone,
-                    contactName: contactName,
-                    haddress: address,
-                    hstate: state,
-                    hcity: city,
-                    userType: stype
-                });
-
-                break;
-            case "l":
-                // Register code here for Lab
-                userDetails = new LabModel({
-                    lid: uid,
-                    lname: name,
-                    email: email,
-                    contactNumber: phone,
-                    contactName: contactName,
-                    laddress: address,
-                    lstate: state,
-                    lcity: city,
-                    ltests: ltests
-                });
-
-                break;
-            case "ph":
-                // Register code here for Pharmacy
-                userDetails = new PharmacyModel({
-                    pid: uid,
-                    pname: name,
-                    email: email,
-                    contactNumber: phone,
-                    contactName: contactName,
-                    paddress: address,
-                    pstate: state,
-                    pcity: city
-                });
-
-                break;
-            default:
-                console.log("Invalid user type !!");
-                return res.status(400).json({
-                    msg: "You have registered as invalid user !"
-                });
-        }
-
-        user.password = encodePassword(password);
-
-        await user.save();
-        await userDetails.save();
-
-        jwt.sign(
-            payload,
-            "randomString", {
-            expiresIn: 10000
-        },
-            (err, token) => {
-                if (err) throw err;
-                res.status(200).json({
-                    'token': token, 'uid': uid
-                });
-            }
-        );
     } catch (err) {
         console.log(err.message);
         res.status(500).send("Error in Saving | " + err.message);
