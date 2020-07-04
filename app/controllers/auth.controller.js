@@ -262,28 +262,22 @@ exports.checkAuth = async (req, res) => {
             case "p":
                 console.log("I am patient !");
                 userDetails = await PatientModel.findOne({ hid: user.id });
-                console.log("user_", userDetails);
-                res.json(userDetails);
                 break;
             case "d":
                 console.log("I am doctor !");
                 userDetails = await StaffModel.findOne({ sid: user.id });
-                console.log("user_", userDetails);
                 break;
             case "h":
                 console.log("I am hospital !");
                 userDetails = await HospitalModel.findOne({ hoid: user.id });
-                console.log("user_", userDetails);
                 break;
             case "l":
                 console.log("I am lab !");
                 userDetails = await LabModel.findOne({ lid: user.id });
-                console.log("user_", userDetails);
                 break;
             case "ph":
                 console.log("I am pharmacy !");
                 userDetails = await PharmacyModel.findOne({ pid: user.id });
-                console.log("user_", userDetails);
                 break;
             default:
                 console.log("Invalid user type !!");
@@ -291,6 +285,9 @@ exports.checkAuth = async (req, res) => {
                     msg: "Invalid user !"
                 });
         }
+
+        // console.log("user_", userDetails);
+        res.json(userDetails);
 
     } catch (e) {
         console.error(e);
