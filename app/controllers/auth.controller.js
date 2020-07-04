@@ -34,6 +34,7 @@ exports.signUp = async (req, res) => {
         sex = req.body.sex || '',
         address = req.body.address || '',
         city = req.body.city || '',
+        state = req.body.state || '',
         country = req.body.country || '',
         stype = req.body.stype || 'd',
         utype = req.params.usertype || '',

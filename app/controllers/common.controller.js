@@ -47,6 +47,9 @@ function generateUniqueId(userType) {
     case "l":
       _ID = "L" + components.join("");
       break;
+    case "ph":
+      _ID = "PH" + components.join("");
+      break;
     default:
       console.log("Invalid user type !!");
       res.json({});
