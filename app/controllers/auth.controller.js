@@ -263,27 +263,21 @@ exports.checkAuth = async (req, res) => {
         const user = await AuthModel.findById(req.user.id);
         switch (type) {
             case "p":
-                console.log("I am patient !");
                 userDetails = await PatientModel.findOne({ hid: user.id });
                 break;
             case "d":
-                console.log("I am doctor !");
                 userDetails = await StaffModel.findOne({ sid: user.id });
                 break;
             case "h":
-                console.log("I am hospital !");
                 userDetails = await HospitalModel.findOne({ hoid: user.id });
                 break;
             case "l":
-                console.log("I am lab !");
                 userDetails = await LabModel.findOne({ lid: user.id });
                 break;
             case "ph":
-                console.log("I am pharmacy !");
                 userDetails = await PharmacyModel.findOne({ pid: user.id });
                 break;
             default:
-                console.log("Invalid user type !!");
                 return res.status(400).json({
                     msg: "Invalid user !"
                 });

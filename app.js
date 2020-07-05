@@ -9,7 +9,7 @@ const cors = require('cors');
 const app = express();
 
 const indexRouter = require('./app/routes/index');
-const patientsRouter = require('./app/routes/patients');
+const usersRouter = require('./app/routes/users');
 const authRouter = require('./app/routes/auth');
 
 
@@ -42,7 +42,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/patients', patientsRouter);
+app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

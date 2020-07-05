@@ -29,7 +29,7 @@ const patientsSchema = db.Schema({
     height: { type: Number, required: true },
     dob: { type: Date, required: true },
     sex: { type: String, required: true },
-    phone: { type: String, required: true, sparse: true},
+    phone: { type: String, required: true, sparse: true },
     email: { type: String, required: true, sparse: true },
     address: { type: String, required: true },
     city: { type: String, required: true },
@@ -41,9 +41,10 @@ const appointmentSummarySchema = db.Schema({
     appointmentname: String,
     appointmentid: { type: String, unique: true },
     doctorid: { type: String, required: true },
-    appointmenttime: { type: Date },
+    appointmenttime: Date,
+    bookedBy: String,
     createdAt: { type: Date, default: Date.now() }
 });
 
 module.exports.PatientModel = db.model('patient_info_tbl', patientsSchema);
-module.exports.HospitalModel = db.model('appointments_tbl', appointmentSummarySchema);
+module.exports.AppointmentModel = db.model('appointments_tbl', appointmentSummarySchema);
