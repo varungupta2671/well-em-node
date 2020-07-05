@@ -151,6 +151,10 @@ exports.getBookedTestList = async (req, res) => {
             // get patient appointment list
             requestData = { labid: uid };
             break;
+        case "all":
+            // get patient appointment list
+            requestData = '';
+            break;
         default:
             res.status(400).json({
                 msg: "Invalid user !"
