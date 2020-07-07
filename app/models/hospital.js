@@ -35,6 +35,7 @@ const departmentSchema = db.Schema({
 });
 
 const treatmentSummarySchema = db.Schema({
+    hoid: String,
     uid: String,
     treatmentname: String,
     treatmentid: { type: String, unique: true },
@@ -42,6 +43,17 @@ const treatmentSummarySchema = db.Schema({
     createdAt: { type: Date, default: Date.now() }
 });
 
+const emergencyWardSchema = db.Schema({
+    bookingid: String,
+    hoid: String,
+    uid: String,
+    bookingname: String,
+    bookingdescription: String,
+    BookingStart: Date,
+    BookingEnd: Date
+});
+
 module.exports.HospitalModel = db.model('hospital_info_tbl', hospitalSchema);
 module.exports.DepartmentModel = db.model('departments_tbl', departmentSchema);
 module.exports.TreatmentModel = db.model('hospitalized_summary_tbl', treatmentSummarySchema);
+module.exports.EmergencyWardModel = db.model('emergency_ward_tbl', emergencyWardSchema);

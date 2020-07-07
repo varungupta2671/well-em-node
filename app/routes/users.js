@@ -9,13 +9,19 @@ router.post('/getUserDetails/:utype/:uid', token, usersCtrl.getUserDetails);
 
 router.post('/getAppointments/:utype/:uid', token, usersCtrl.getAppointmentsList);
 
-router.post('/BookAppointment/:utype', token, usersCtrl.BookAppointment);
+router.post('/bookAppointment/:utype', token, usersCtrl.bookAppointment);
 
 router.post('/getBookedTests/:utype/:uid', token, usersCtrl.getBookedTestList);
 
-router.post('/BookLabTest/:utype', token, usersCtrl.BookLabTest);
+router.post('/bookLabTest/:utype', token, usersCtrl.bookLabTest);
 
-// router.post('/addPatientToHospital/:uid/:hoid', token, usersCtrl.savePatientToHospital);
+router.post('/bookTreatment/:hoid', token, usersCtrl.bookTreatment);
+
+router.post('/getTreatments/:hoid/:uid', token, usersCtrl.getTreatmentsList);
+
+router.post('/bookEmergencyWard/:hoid', token, usersCtrl.bookEmergencyWard);
+
+router.post('/getEmergencyWardBookings/:hoid/:uid', token, usersCtrl.getEmergencyWardBookings);
 
 // router.put('/updatePatient/:hid', token, usersCtrl.updatePatient);
 

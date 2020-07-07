@@ -1,6 +1,6 @@
 const { PatientModel, AppointmentModel } = require('../models/patient');
 const { StaffModel } = require('../models/staff');
-const { HospitalModel } = require('../models/hospital');
+const { HospitalModel, TreatmentModel, EmergencyWardModel } = require('../models/hospital');
 const { LabModel, BookedLabTestModel, LabTestModel } = require('../models/lab');
 const { PharmacyModel } = require('../models/pharmacy');
 const { getUniqueId } = require("../controllers/common.controller.js");
@@ -108,7 +108,7 @@ exports.getAppointmentsList = async (req, res) => {
         });
 };
 
-exports.BookAppointment = (req, res) => {
+exports.bookAppointment = (req, res) => {
     // Validate request
     if (!req.body) {
         return res.status(400).send({
@@ -176,7 +176,7 @@ exports.getBookedTestList = async (req, res) => {
         });
 };
 
-exports.BookLabTest = (req, res) => {
+exports.bookLabTest = (req, res) => {
     // Validate request
     if (!req.body) {
         return res.status(400).send({
@@ -203,41 +203,111 @@ exports.BookLabTest = (req, res) => {
         });
 };
 
-// exports.savePatientToHospital = (req, res) => {
-//     // Validate request
-//     if (!req.body) {
-//         return res.status(400).send({
-//             message: "Patient content can not be empty"
-//         });
-//     }
+exports.bookTreatment = (req, res) => {
+    // Validate request
+    if (!req.body) {
+        return res.status(400).send({
+            message: "Treatment content can not be empty"
+        });
+    }
 
-//     // Save a Patient
-//     const category = new PatientModel({
-//         hid: req.body.hid,
-//         aadharid: req.body.aadharid,
-//         name: req.body.name,
-//         age: req.body.age,
-//         bg: req.body.bg,
-//         weight: req.body.weight,
-//         height: req.body.height,
-//         dob: req.body.dob,
-//         sex: req.body.sex,
-//         phone: req.body.phone,
-//         email: req.body.email,
-//         address: req.body.address,
-//         city: req.body.city
-//     });
+    // Save a treatment booking
+    const treatmentData = new TreatmentModel({
+        hoid: req.params.hoid,
+        uid: req.body.uid,
+        treatmentid: req.body.treatmentid,
+        treatmentname: req.body.treatmentname,
+        treatmentdescription: req.body.treatmentdescription
+    });
 
-//     // Save Patient in the database
-//     category.save()
-//         .then(data => {
-//             res.send(data);
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message || "Some error occurred while creating the Patient."
-//             });
-//         });
-// };
+    // Save a treatment booking in the database
+    treatmentData.save()
+        .then(data => {
+            res.send(data);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while booking the lab test."
+            });
+        });
+};
+
+exports.getTreatmentsList = (req, res) => {
+    // console.log('request', req);
+    const hoid = req.params.hoid;
+    const uid = req.params.uid;
+    TreatmentModel.find({ hoid: hoid }, { uid: uid })
+        .then(list => {
+            if (!list) {
+                return res.status(404).send({
+                    message: "No any treatment found with hospital id " + hoid
+                });
+            }
+            res.send(list);
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Hospital not found with id " + hoid
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving treatments"
+            });
+        });
+};
+
+exports.bookEmergencyWard = (req, res) => {
+    // Validate request
+    if (!req.body) {
+        return res.status(400).send({
+            message: "Booking content can not be empty"
+        });
+    }
+
+    // Save a booking
+    const bookingData = new EmergencyWardModel({
+        hoid: req.params.hoid,
+        uid: req.body.uid,
+        bookingid: req.body.bookingid,
+        bookingname: req.body.bookingname,
+        bookingdescription: req.body.bookingdescription,
+        BookingStart: req.body.BookingStart,
+        BookingEnd: req.body.BookingEnd
+    });
+
+    // Save a booking in the database
+    bookingData.save()
+        .then(data => {
+            res.send(data);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while booking."
+            });
+        });
+};
+
+exports.getEmergencyWardBookings = (req, res) => {
+    // console.log('request', req);
+    const hoid = req.params.hoid;
+    const uid = req.params.uid;
+    EmergencyWardModel.find({ hoid: hoid }, { uid: uid })
+        .then(list => {
+            if (!list) {
+                return res.status(404).send({
+                    message: "No any booking found with hospital id " + hoid
+                });
+            }
+            res.send(list);
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Hospital not found with id " + hoid
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving bookings"
+            });
+        });
+};
 
 // exports.deletePatient = (req, res) => {
 //     PatientModel.findOneAndRemove({ hid: req.params.hid })
