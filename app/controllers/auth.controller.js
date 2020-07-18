@@ -227,7 +227,7 @@ exports.signIn = async (req, res) => {
             payload,
             "randomString",
             {
-                expiresIn: 3600
+                expiresIn: 10000
             },
             (err, token) => {
                 if (err) throw err;

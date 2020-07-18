@@ -1,6 +1,6 @@
 const { PatientModel, AppointmentModel } = require('../models/patient');
 const { StaffModel } = require('../models/staff');
-const { HospitalModel, TreatmentModel, EmergencyWardModel } = require('../models/hospital');
+const { HospitalModel, DepartmentModel, TreatmentModel, EmergencyWardModel } = require('../models/hospital');
 const { LabModel, BookedLabTestModel, LabTestModel } = require('../models/lab');
 const { PharmacyModel } = require('../models/pharmacy');
 const { getUniqueId } = require("../controllers/common.controller.js");
@@ -9,6 +9,7 @@ exports.getUsersList = async (req, res) => {
     // console.log('request', req);
     let userDetails;
     const utype = req.params.utype;
+    const stype = req.params.stype;
     try {
         switch (utype) {
             case "p":
@@ -17,11 +18,15 @@ exports.getUsersList = async (req, res) => {
                 break;
             case "d":
                 // get staff list
-                userDetails = await StaffModel.find();
+                userDetails = await StaffModel.find({ stype: stype });
                 break;
             case "h":
                 // get hospital list
-                userDetails = await HospitalModel.find();
+                userDetails = await HospitalModel.find({userType: stype});
+                break;
+            case "de":
+                // get department list
+                userDetails = await DepartmentModel.find();
                 break;
             case "l":
                 // get lab list
@@ -55,15 +60,13 @@ exports.getUserDetails = (req, res) => {
     const uid = req.params.uid;
     PatientModel.find({ hid: uid })
         .then(patient => {
-            if (!patient) {
-                return res.status(404).send({
-                    message: "Patient not found with id " + uid
-                });
+            if (!patient.length) {
+                res.send({'statusCode': 400, 'message': 'No user found!', 'data': {}});
             }
-            res.send(patient[0]);
+            res.send({'statusCode': 200, 'data': patient[0]});
         }).catch(err => {
             if (err.kind === 'ObjectId') {
-                return res.status(404).send({
+                return res.status(400).send({
                     message: "Patient not found with id " + uid
                 });
             }

@@ -3,7 +3,7 @@ const router = express.Router();
 const { token } = require("../controllers/common.controller.js");
 const usersCtrl = require('../controllers/users.controller.js');
 
-router.post('/getUsers/:utype', token, usersCtrl.getUsersList);
+router.post('/getUsers/:utype/:stype', token, usersCtrl.getUsersList);
 
 router.post('/getUserDetails/:utype/:uid', token, usersCtrl.getUserDetails);
 
